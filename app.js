@@ -74,6 +74,11 @@ function processPostback(event) {
       sendMessage(senderId, {text: message});
     });
   }
+
+  if(payload === "hej"){
+    var message = "Lets get your money";
+    sendMessage(senderId, {text: message});
+  }
 }
 
 // sends message to user
