@@ -39,6 +39,8 @@ app.post("/webhook", function (req, res) {
       entry.messaging.forEach(function(event) {
         if (event.postback) {
           processPostback(event);
+        } else if (event.message) {
+          processMessage(event);
         }
       });
     });
@@ -46,6 +48,29 @@ app.post("/webhook", function (req, res) {
     res.sendStatus(200);
   }
 });
+
+
+function processMessage(event) {
+  if (!event.message.is_echo) {
+    var message = event.message;
+    var senderId = event.sender.id;
+
+    console.log("Received message from senderId: " + senderId);
+    console.log("Message is: " + JSON.stringify(message));
+
+    // You may get a text or attachment but not both
+    if (message.text) {
+      var formattedMsg = message.text.toLowerCase().trim();
+      if(formattedMsg === "hej"){
+        sendMessage(senderId, {text: "lets go get your cash Britta!!!!"});
+      }
+
+
+    } else if (message.attachments) {
+      sendMessage(senderId, {text: "Sorry, I don't understand your request."});
+    }
+  }
+}
 
 function processPostback(event) {
   var senderId = event.sender.id;
@@ -75,10 +100,7 @@ function processPostback(event) {
     });
   }
 
-  if(payload === "hej"){
-    var message = "Lets get your money";
-    sendMessage(senderId, {text: message});
-  }
+
 }
 
 // sends message to user
