@@ -299,7 +299,9 @@ function processPostback(event) {
 
 
       function sendMessageWithCustomButtons(){
+        console.log("sends custom buttons");
         if(buttons.length>0){
+          console.log("sends custom buttons with attached buttons");
           response = {
             "attachment": {
               "type": "template",
@@ -315,6 +317,7 @@ function processPostback(event) {
           sendMessage(senderId, response);
 
         } else{
+          console.log("sends error notice instead: meet more men");
           response = {
             "text": "Oh you wouldn't know who I was talking about even if I told you. But if you meet someone else you can also ask them about me."
           }
