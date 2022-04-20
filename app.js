@@ -97,7 +97,6 @@ function beginOnBoarding(event){
     if (message.text) {
 
       response = {
-        "text": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. You will play as Britta Spyd, a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money.",
         "attachment": {
           "type": "template",
           "payload": {
@@ -134,6 +133,12 @@ function processPostback(event) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
   if(payload === "yes_i_wanna_play"){
+
+    response = {
+      "text": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. "
+    }
+    sendMessage(senderId, response);
+
     response = {
       "attachment": {
         "type": "template",
@@ -141,19 +146,15 @@ function processPostback(event) {
           "template_type": "generic",
           "elements": [{
             "title": "You play as Britta Spyd",
-            "subtitle": "a recently widowed woman in Copenhagen 1894",
+            "subtitle": "a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money.",
             "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
             "buttons": [
               {
                 "type": "postback",
-                "title": "Yes!",
-                "payload": "yes_i_wanna_play",
-              },
-              {
-                "type": "postback",
-                "title": "No!",
-                "payload": "no_i_dont_want_to_play",
+                "title": "Lets do this",
+                "payload": "lets_do_this",
               }
+            
             ],
           }]
         }
@@ -166,6 +167,11 @@ function processPostback(event) {
       "text": "boo u r"
     }
     sendMessage(senderId, response);
+  } else if(payload === "lets_do_this"){
+    response = {
+      "text": "here is how this will go"
+    }
+    sendMessage(senderId, response);
   }
 
 
@@ -174,9 +180,12 @@ function processPostback(event) {
 function processMessage(event) {
   var senderId = event.sender.id;
   var message = event.message;
-  var payload = event.postback.payload;
 
   console.log("IS ALREADY PLAYER, and sends message", message);
+  response = {
+    "text": "hej you are already playing"
+  }
+  sendMessage(senderId, response);
 
 }
 
