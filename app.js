@@ -42,9 +42,9 @@ app.post("/webhook", function (req, res) {
     req.body.entry.forEach(function(entry) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
-        if(!event.message.is_echo){
+       
           check_if_player_is_new(event);
-        }
+        
       });
     });
 
@@ -302,7 +302,7 @@ function processMessage(event) {
   var formattedMessage = message.text.toLowerCase().trim().toString();
 
   
-
+  if (!event.message.is_echo) {
 
 
   if(formattedMessage.includes("agnes")){
@@ -396,7 +396,7 @@ function processMessage(event) {
   } 
 
 
-
+}
 }
 
 
