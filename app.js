@@ -89,9 +89,10 @@ function check_if_player_is_new(event) {
             .then(result => {
 
 
-              console.log("CURRENT CHARACTER", result);
+              
 
               current_character = result.rows[0].current_character;
+              console.log("CURRENT CHARACTER", current_character);
 
               if (event.postback) {
                 processPostback(event);
@@ -266,7 +267,7 @@ function processPostback(event) {
       let sortedmen = [];
       let buttons =  [];
       if(current_character != null && men.includes(current_character)){
-        sortedmen = arr.filter((value) => value !== current_character)
+        sortedmen = men.filter((value) => value !== current_character)
       }
 
       console.log("CHECKS OTHER MEN", sortedmen);
@@ -281,6 +282,23 @@ function processPostback(event) {
           if( result.rows[0] != null){
             buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
           }
+          response = {
+            "attachment": {
+              "type": "template",
+              "payload": {
+                "template_type": "generic",
+                "elements": [{
+                  "title": "Wanna learn how to play?",
+                  "subtitle": "",
+                  "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+                  "buttons": buttons
+                }]
+              }
+            }
+          }
+          sendMessage(senderId, response);
+
+          
         }).catch(err => { 
 
           console.log("FAILS AT ASKING ABOUT MEN");
@@ -289,21 +307,7 @@ function processPostback(event) {
       }
     
 
-      response = {
-        "attachment": {
-          "type": "template",
-          "payload": {
-            "template_type": "generic",
-            "elements": [{
-              "title": "Wanna learn how to play?",
-              "subtitle": "",
-              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
-              "buttons": buttons
-            }]
-          }
-        }
-      }
-      sendMessage(senderId, response);
+  
 
       
     
