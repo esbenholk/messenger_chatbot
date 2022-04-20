@@ -26,14 +26,14 @@ module.exports.createUser = function createUser(id, username) {
 
 module.exports.dynamicMan = function dynamicTip(manID, message, id) {
   return database.query(
-    `UPDATE userdata SET `+  manID + ` = $1 WHERE id =$2 RETURNING *`,
+    `UPDATE britta_game_scores SET `+  manID + ` = $1 WHERE id =$2 RETURNING *`,
     [message,id]  
   );
 };
 
 module.exports.setCurrentCharacter = function setCurrentCharacter(character, id) {
   return database.query(
-    `UPDATE userdata SET current_character = $1 WHERE id =$2 RETURNING *`,
+    `UPDATE britta_game_scores SET current_character = $1 WHERE id =$2 RETURNING *`,
     [character,id]  
   );
 };
