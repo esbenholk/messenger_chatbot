@@ -137,34 +137,37 @@ function processPostback(event) {
     response = {
       "text": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. "
     }
-    sendMessage(senderId, response);
-
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [{
-            "title": "You play as Britta Spyd",
-            "subtitle": "a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money.",
-            "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "Lets do this",
-                "payload": "lets_do_this",
-              }
-            
-            ],
-          }]
+    sendMessage(senderId, response).then(result=>{
+      response = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "title": "You play as Britta Spyd",
+              "subtitle": "a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money.",
+              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+              "buttons": [
+                {
+                  "type": "postback",
+                  "title": "Lets do this",
+                  "payload": "lets_do_this",
+                }
+              
+              ],
+            }]
+          }
         }
       }
-    }
-    sendMessage(senderId, response);
+      sendMessage(senderId, response);
+
+    });
+
+    
 
   } else if(payload === "no_i_dont_want_to_play"){
     response = {
-      "text": "boo u r"
+      "text": "boo u r boring"
     }
     sendMessage(senderId, response);
   } else if(payload === "lets_do_this"){
@@ -191,7 +194,7 @@ function processMessage(event) {
 
 
 
-function sendMessage(sender_psid, response) {
+async function sendMessage(sender_psid, response) {
   
   // Construct the message body
   let request_body = {
