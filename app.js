@@ -277,7 +277,10 @@ function processPostback(event) {
   
           databaseActions.getDynamicMan(man, senderId)
           .then(result => {
-            console.log(`has user met ${man}?`, result.rows[0][Object.keys(obj)[result.rows[0]]]);
+
+            let resultObj =  result.rows[0];
+            console.log(`has user met ${man}?`,resultObj[Object.keys(resultObj)[0]]);
+           
             if( result.rows[0] != null){
               buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
             }
