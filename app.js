@@ -242,9 +242,9 @@ function processPostback(event) {
 
 function processMessage(event) {
   var senderId = event.sender.id;
-  var message = event.message;
+  var message = event.message.text.toLowerCase();
 
-  if(message.text.contains("agnes")){
+  if(message.contains("agnes")){
     
       console.log("IS ALREADY PLAYER, and sends message", message);
       response = {
@@ -252,7 +252,7 @@ function processMessage(event) {
       }
       sendMessage(senderId, response);
 
-  } else if(message.text.contains("reception")){
+  } else if(message.contains("reception")){
     
     response = {
       "text": "Welcome to the Public Trustee. As the Danish Government doesn't allow lone women to own any wealth, we offer to help widows like yourself to regain ownership over their belongings. All you have to do is pick up a form and bring it to the Director's office. If you're not ready, you can come back later with more information by simply typing reception. Enjoy your visit!"
@@ -267,10 +267,13 @@ function processMessage(event) {
       sendMessage(senderId, response);
     }, 3000);
 
-  } else if(message.text..contains("director")){
-    console.log("goes to the director");
+  } else if(message.contains("director")){
+    response = {
+      "text": "you are standing in the Directors office, are you ready to see him?"
+    }
+    sendMessage(senderId, response);
 
-  } else if(message.text.contains("atelier")){
+  } else if(message.contains("atelier")){
     response = {
       "text": "you are standing in the atelier. This is a place to wait and maybe meet a stranger. Oh! look at that: Ole is here. Lets chat with him"
     }
