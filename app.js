@@ -266,10 +266,10 @@ function processPostback(event) {
       let men = ["carl", "ole", "boerge", "ludwig"];
       let sortedmen = [];
       let buttons =  [];
-      if(current_character != null && men.includes(current_character)){
-        sortedmen = men.filter((value) => value !== current_character)
+      if(current_character != null) {
+        sortedmen = men.filter((value) => value !== current_character.toLowerCase())
+  
       }
-
       console.log("CHECKS OTHER MEN", sortedmen);
 
       
@@ -282,29 +282,29 @@ function processPostback(event) {
           if( result.rows[0] != null){
             buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
           }
-          response = {
-            "attachment": {
-              "type": "template",
-              "payload": {
-                "template_type": "generic",
-                "elements": [{
-                  "title": "Wanna learn how to play?",
-                  "subtitle": "",
-                  "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
-                  "buttons": buttons
-                }]
-              }
-            }
-          }
-          sendMessage(senderId, response);
-
-          
+     
         }).catch(err => { 
 
           console.log("FAILS AT ASKING ABOUT MEN");
         });
         
       }
+
+      response = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "title": "Wanna learn how to play?",
+              "subtitle": "",
+              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+              "buttons": buttons
+            }]
+          }
+        }
+      }
+      sendMessage(senderId, response);
     
 
   
