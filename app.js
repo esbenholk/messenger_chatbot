@@ -282,6 +282,10 @@ function processPostback(event) {
           if( result.rows[0] != null){
             buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
           }
+
+          if(index >= 2){
+            sendMessageWithCustomButtons()
+          }
      
         }).catch(err => { 
 
@@ -290,21 +294,24 @@ function processPostback(event) {
         
       }
 
-      response = {
-        "attachment": {
-          "type": "template",
-          "payload": {
-            "template_type": "generic",
-            "elements": [{
-              "title": "Wanna learn how to play?",
-              "subtitle": "",
-              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
-              "buttons": buttons
-            }]
+      function sendMessageWithCustomButtons(){
+        response = {
+          "attachment": {
+            "type": "template",
+            "payload": {
+              "template_type": "generic",
+              "elements": [{
+                "title": "Wanna learn how to play?",
+                "subtitle": "",
+                "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+                "buttons": buttons
+              }]
+            }
           }
         }
+        sendMessage(senderId, response);
       }
-      sendMessage(senderId, response);
+
     
 
   
