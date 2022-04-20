@@ -60,19 +60,23 @@ function processMessage(event) {
   if (!event.message.is_echo) {
     var message = event.message;
     var senderId = event.sender.id;
+    var username = event.sender.username;
+    var isAlreadyUser
 
     databaseActions.getUser(senderId)
       .then(result => {
-          console.log(result);
+          if(!result){
+            databaseActions.createUser(senderId, username)
+            .then(result => {
+                console.log(result);
+              }).catch(err => {
+               console.log(err);
+            });
+          }
         }).catch(err => {
          console.log(err);
       });
-    databaseActions.createUser(senderId, "briteny")
-      .then(result => {
-          console.log(result);
-        }).catch(err => {
-         console.log(err);
-      });
+
 
     console.log("Received message from senderId: " + senderId);
     console.log("Message is: " + JSON.stringify(message));

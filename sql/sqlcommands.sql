@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS britta_game_scores;
 CREATE TABLE britta_game_scores(
 
-    id SERIAL primary key,
+    id NUMERIC,
     username VARCHAR,
     
     current_space VARCHAR,
