@@ -110,7 +110,6 @@ function check_if_player_is_new(event) {
 
 function beginOnBoarding(event){
 
-  if (event.message && !event.message.is_echo) {
     console.log("receives message:  ", event);
     var message = event.message;
     var senderId = event.sender.id;
@@ -147,7 +146,7 @@ function beginOnBoarding(event){
     
   } 
 
-  }
+  
 
 }
 
