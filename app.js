@@ -54,16 +54,15 @@ function check_if_player_is_new(event) {
 
   console.log("checks if player is new:  ", event);
 
-  if (!event.message.is_echo) {
-    var senderId = event.sender.id;
+  var senderId = event.sender.id;
 
-    databaseActions.getUser(senderId)
+  databaseActions.getUser(senderId)
       .then(result => {
          
           console.log("GETS USER", result);
           if(result.rowCount === 0){
 
-            databaseActions.createUser(senderId, username)
+            databaseActions.createUser(senderId)
             .then(result => {
               console.log("CREATED USER", result);
                 beginOnBoarding(event);
@@ -82,14 +81,9 @@ function check_if_player_is_new(event) {
           }
         }).catch(err => {
          console.log("DOES NOT GET USER", err);
-      });
+  });
 
-    } else if (event.message.attachments) {
-      let attachment_url = message.attachments[0].payload.url;
-
-      sendMessage(senderId, "Sorry, I don't understand that. I am not so good at recognising images yet");
-    }
-  
+    
 }
 
 function beginOnBoarding(event){
