@@ -272,13 +272,12 @@ function processPostback(event) {
       }
       console.log("CHECKS OTHER MEN", sortedmen);
 
-      if(sortedmen.length>0){
-        for (let index = 0; index < sortedmen.length; index++) {
+      for (let index = 0; index < sortedmen.length; index++) {
           const man = sortedmen[index];
   
           databaseActions.getDynamicMan(man, senderId)
           .then(result => {
-            console.log(`has user met ${man}?`, result.rows[0]);
+            console.log(`has user met ${man}?`, result.rows[0][Object.keys(obj)[result.rows[0]]]);
             if( result.rows[0] != null){
               buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
             }
@@ -292,29 +291,33 @@ function processPostback(event) {
             console.log("FAILS AT ASKING ABOUT MEN");
           });
           
-        }
-      } else{
-        response = {
-          "text": "Oh you wouldn't know who I was talking about even if I told you. But if you meet someone else you can also ask them about me."
-        }
-        sendMessage(senderId, response);
       }
+      
 
 
       function sendMessageWithCustomButtons(){
-        response = {
-          "attachment": {
-            "type": "template",
-            "payload": {
-              "template_type": "buttons",
-              "elements": [{
-                "title": "Who do you wanna hear about?",
-                "buttons": buttons
-              }]
+        if(buttons.length>0){
+          response = {
+            "attachment": {
+              "type": "template",
+              "payload": {
+                "template_type": "buttons",
+                "elements": [{
+                  "title": "Who do you wanna hear about?",
+                  "buttons": buttons
+                }]
+              }
             }
           }
+          sendMessage(senderId, response);
+
+        } else{
+          response = {
+            "text": "Oh you wouldn't know who I was talking about even if I told you. But if you meet someone else you can also ask them about me."
+          }
+          sendMessage(senderId, response);
         }
-        sendMessage(senderId, response);
+   
       }
 
     
