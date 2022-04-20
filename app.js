@@ -201,7 +201,7 @@ function processPostback(event) {
               "buttons": [
                 {
                   "type": "postback",
-                  "title": "teach me the ways of the Public Trustee",
+                  "title": "teach me",
                   "payload": "teach_me",
                 }
               
@@ -244,7 +244,7 @@ function processMessage(event) {
   var senderId = event.sender.id;
   var message = event.message;
 
-  if(message.contains("agnes")){
+  if(message.text.contains("agnes")){
     
       console.log("IS ALREADY PLAYER, and sends message", message);
       response = {
@@ -252,7 +252,7 @@ function processMessage(event) {
       }
       sendMessage(senderId, response);
 
-  } else if(message.contains("reception")){
+  } else if(message.text.contains("reception")){
     
     response = {
       "text": "Welcome to the Public Trustee. As the Danish Government doesn't allow lone women to own any wealth, we offer to help widows like yourself to regain ownership over their belongings. All you have to do is pick up a form and bring it to the Director's office. If you're not ready, you can come back later with more information by simply typing reception. Enjoy your visit!"
@@ -267,10 +267,10 @@ function processMessage(event) {
       sendMessage(senderId, response);
     }, 3000);
 
-  } else if(message.contains("director")){
+  } else if(message.text..contains("director")){
     console.log("goes to the director");
 
-  } else if(message.contains("atelier")){
+  } else if(message.text.contains("atelier")){
     response = {
       "text": "you are standing in the atelier. This is a place to wait and maybe meet a stranger. Oh! look at that: Ole is here. Lets chat with him"
     }
