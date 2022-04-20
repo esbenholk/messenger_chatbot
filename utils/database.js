@@ -8,8 +8,8 @@ var database = spicedPg(
 
 
 /////get userdata from ID. 
-module.exports.getUser= function getUser(username) {
-  return database.query(`SELECT * FROM britta_game_scores WHERE username=$1`, [username]);
+module.exports.getUser= function getUser(id) {
+  return database.query(`SELECT * FROM britta_game_scores WHERE id=$1`, [id]);
 };
 
 
@@ -22,10 +22,10 @@ module.exports.getUser= function getUser(username) {
 // };
 
 // /////CREATING USERNAME AND ID
-module.exports.createUser = function createUser(username) {
+module.exports.createUser = function createUser(id, username) {
   return database.query(
-    `INSERT INTO britta_game_scores (username) VALUES ($1) RETURNING *`,
-    [username]
+    `INSERT INTO britta_game_scores (id, username) VALUES ($1, $2) RETURNING *`,
+    [id, username]
   );
 };
 

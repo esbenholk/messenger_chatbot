@@ -3,7 +3,6 @@ var express = require("express");
 var request = require("request");
 require('dotenv').config();
 
-app.use(express.static("./utils"));
 
 var bodyParser = require("body-parser");
 
@@ -12,6 +11,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
+app.use(express.static("./utils"));
 const databaseActions = require("./utils/database");
 
 // Server index page
@@ -55,18 +55,24 @@ app.post("/webhook", function (req, res) {
 
 
 function processMessage(event) {
-    var isUser;
-    databaseActions.createUser("briteny")
-      .then(result => {
-          console.log(result);
-        }).catch(err => {
-         console.log(err);
-      });
 
 
   if (!event.message.is_echo) {
     var message = event.message;
     var senderId = event.sender.id;
+
+    databaseActions.getUser(senderId)
+      .then(result => {
+          console.log(result);
+        }).catch(err => {
+         console.log(err);
+      });
+    databaseActions.createUser(senderId, "briteny")
+      .then(result => {
+          console.log(result);
+        }).catch(err => {
+         console.log(err);
+      });
 
     console.log("Received message from senderId: " + senderId);
     console.log("Message is: " + JSON.stringify(message));
