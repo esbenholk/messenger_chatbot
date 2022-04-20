@@ -299,8 +299,8 @@ function processPostback(event) {
 
 
       function sendMessageWithCustomButtons(){
-        console.log("sends custom buttons");
-        if(buttons.length>0){
+        console.log("sends custom buttons", buttons);
+        if(buttons.length > 0){
           console.log("sends custom buttons with attached buttons");
           response = {
             "attachment": {
