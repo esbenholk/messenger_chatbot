@@ -58,14 +58,17 @@ function processMessage(event) {
 
 
   if (!event.message.is_echo) {
+    console.log("receives message:  ", event.message);
     var message = event.message;
     var senderId = event.sender.id;
     var username = event.sender.username;
-    var isAlreadyUser
+    var isAlreadyUser = false;
 
     databaseActions.getUser(senderId)
       .then(result => {
-          console.log("CHECK FOR USER", result);
+         
+          console.log("GETS USER", result);
+          
           if(!result){
             databaseActions.createUser(senderId, username)
             .then(result => {
@@ -75,7 +78,7 @@ function processMessage(event) {
             });
           }
         }).catch(err => {
-         console.log(err);
+         console.log("DOES NOT GET USER", err);
       });
 
 
