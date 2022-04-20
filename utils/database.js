@@ -42,7 +42,7 @@ module.exports.setCurrentCharacter = function setCurrentCharacter(character, id)
 // ////recaptcha query 
 // module.exports.checkHumanity = function checkHumanity(humanityCheck, id) {
 //   return database.query(
-//     `UPDATE userdata SET humanity_check = $1 WHERE id =$2 RETURNING *`,
+//     `UPDATE userdata SET humanity_check = $1 WHheokERE id =$2 RETURNING *`,
 //     [humanityCheck, id]  
 //   );
 // };

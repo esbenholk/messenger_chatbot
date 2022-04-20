@@ -48,7 +48,9 @@ app.post("/webhook", function (req, res) {
     req.body.entry.forEach(function(entry) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
-        check_if_player_is_new(event);
+        if(!event.message.is_echo){
+          check_if_player_is_new(event);
+        }
       });
     });
 
