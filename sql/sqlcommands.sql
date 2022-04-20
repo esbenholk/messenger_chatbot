@@ -6,6 +6,7 @@ CREATE TABLE britta_game_scores(
     username VARCHAR,
     
     current_space VARCHAR,
+    current_character VARCHAR,
 
     form1 VARCHAR,
     form2 VARCHAR,

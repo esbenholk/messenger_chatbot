@@ -13,13 +13,7 @@ module.exports.getUser= function getUser(id) {
 };
 
 
-// module.exports.getEveryone = function getEveryone() {
-//   return database.query(`SELECT * FROM userdata`);
-// };
 
-// module.exports.getUserDetails= function getUserDetails(username) {
-//   return database.query(`SELECT * FROM userdata WHERE username=$1`, [username]);
-// };
 
 // /////CREATING USERNAME AND ID
 module.exports.createUser = function createUser(id, username) {
@@ -28,6 +22,22 @@ module.exports.createUser = function createUser(id, username) {
     [id, username]
   );
 };
+
+
+module.exports.dynamicMan = function dynamicTip(manID, message, id) {
+  return database.query(
+    `UPDATE userdata SET `+  manID + ` = $1 WHERE id =$2 RETURNING *`,
+    [message,id]  
+  );
+};
+
+module.exports.setCurrentCharacter = function setCurrentCharacter(character, id) {
+  return database.query(
+    `UPDATE userdata SET current_character = $1 WHERE id =$2 RETURNING *`,
+    [character,id]  
+  );
+};
+
 
 // ////recaptcha query 
 // module.exports.checkHumanity = function checkHumanity(humanityCheck, id) {
@@ -50,12 +60,7 @@ module.exports.createUser = function createUser(id, username) {
 //     [id]  
 //   );
 // };
-// module.exports.dynamicTip = function dynamicTip(performer, tip, id) {
-//   return database.query(
-//     `UPDATE userdata SET `+  performer + ` = $1 WHERE id =$2 RETURNING *`,
-//     [tip,id]  
-//   );
-// };
+
 // module.exports.getTip = function getTip(performer, id) {
 //   return database.query(
 //     `SELECT` + performer + ` FROM userdata WHERE id =$1`,

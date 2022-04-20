@@ -14,6 +14,13 @@ app.listen((process.env.PORT || 5000));
 app.use(express.static("./utils"));
 const databaseActions = require("./utils/database");
 
+var ole_id;
+var carl_id;
+var ludwig_id;
+var boerge_id;
+var director_id;
+var agnes_id;
+
 // Server index page
 app.get("/", function (req, res) {
   res.send("Deployed!");
@@ -132,28 +139,70 @@ function beginOnBoarding(event){
 function processPostback(event) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
+
   if(payload === "yes_i_wanna_play"){
 
-    response = {
-      "text": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. "
-    }
-    sendMessage(senderId, response);
+      response = {
+        "text": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. "
+      }
+      sendMessage(senderId, response);
+      
+      
+      response = {
+          "attachment": {
+            "type": "template",
+            "payload": {
+              "template_type": "generic",
+              "elements": [{
+                "title": "You play as Britta Spyd",
+                "subtitle": "",
+                "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+                "buttons": [
+                  {
+                    "type": "postback",
+                    "title": "Lets do this",
+                    "payload": "lets_do_this",
+                  }
+                
+                ],
+              }]
+            }
+          }
+        }
+
+      setTimeout(() => {
+          sendMessage(senderId, response);
+      }, 1000);
+
     
-    
-    response = {
+
+  } else if(payload === "no_i_dont_want_to_play"){
+      response = {
+        "text": "boo u r boring"
+      }
+      sendMessage(senderId, response);
+  } else if(payload === "lets_do_this"){
+      response = {
+        "text": "you are a recently widowed young woman who has just appeared on the building's doorstep in the hopes that you can get access to your money."
+      }
+
+      sendMessage(senderId, response);
+
+
+      response = {
         "attachment": {
           "type": "template",
           "payload": {
             "template_type": "generic",
             "elements": [{
-              "title": "You play as Britta Spyd",
+              "title": "Wanna learn how to play?",
               "subtitle": "",
-              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453963/Britta%20Spyd/Aase_addvdh.jpg",
               "buttons": [
                 {
                   "type": "postback",
-                  "title": "Lets do this",
-                  "payload": "lets_do_this",
+                  "title": "teach me the ways of the Public Trustee",
+                  "payload": "teach_me",
                 }
               
               ],
@@ -165,20 +214,28 @@ function processPostback(event) {
     setTimeout(() => {
         sendMessage(senderId, response);
     }, 1000);
+    } else if(payload === "teach_me"){
+      response = {
+        "text": "your money is being kept by the Public Trustee. You must find the directors office and convince him to hand you your cash, but be careful! Its not easy being a single woman in 1894: you must interact with people, locate rooms and find the right items in order to get the director to give you what is yours"
+      }
+      sendMessage(senderId, response);
+      response = {
+        "text": "Each room has a code that you can text me, and then I will tell who or what is happening in there and what you might be able to do!"
+      }
+      setTimeout(() => {
+        sendMessage(senderId, response);
+      }, 1000);
 
+
+      sendMessage(senderId, response);
+      response = {
+        "text": "all I can say right now is that us girls must stick together! Can you see the mosaic window? thats my friend Agnes who is making that"
+      }
+      setTimeout(() => {
+        sendMessage(senderId, response);
+      }, 3000);
+    }
     
-
-  } else if(payload === "no_i_dont_want_to_play"){
-    response = {
-      "text": "boo u r boring"
-    }
-    sendMessage(senderId, response);
-  } else if(payload === "lets_do_this"){
-    response = {
-      "text": "you are a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her *money.*"
-    }
-    sendMessage(senderId, response);
-  }
 
 
 }
@@ -187,11 +244,87 @@ function processMessage(event) {
   var senderId = event.sender.id;
   var message = event.message;
 
-  console.log("IS ALREADY PLAYER, and sends message", message);
-  response = {
-    "text": "hej you are already playing"
+  if(message.contains("agnes")){
+    
+      console.log("IS ALREADY PLAYER, and sends message", message);
+      response = {
+        "text": "hej you are already playing"
+      }
+      sendMessage(senderId, response);
+
+  } else if(message.contains("reception")){
+    
+    response = {
+      "text": "Welcome to the Public Trustee. As the Danish Government doesn't allow lone women to own any wealth, we offer to help widows like yourself to regain ownership over their belongings. All you have to do is pick up a form and bring it to the Director's office. If you're not ready, you can come back later with more information by simply typing reception. Enjoy your visit!"
+    }
+    sendMessage(senderId, response);
+
+    sendMessage(senderId, response);
+    response = {
+      "text": "PS.: Please be aware that there might be some inconveniences as we hired an artist to design our window on the main staircase."
+    }
+    setTimeout(() => {
+      sendMessage(senderId, response);
+    }, 3000);
+
+  } else if(message.contains("director")){
+    console.log("goes to the director");
+
+  } else if(message.contains("atelier")){
+    response = {
+      "text": "you are standing in the atelier. This is a place to wait and maybe meet a stranger. Oh! look at that: Ole is here. Lets chat with him"
+    }
+    sendMessage(senderId, response);
+
+    databaseActions.setCurrentCharacter("Ole", senderId)
+    .then(result => {
+       
+      response = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "title": "Lets talk to Ole",
+              "subtitle": "",
+              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453963/Britta%20Spyd/IMG_0179_xlxllt.jpg",
+              "buttons": [
+                {
+                  "type": "postback",
+                  "title": "Talk",
+                  "payload": "talk_to_man",
+                },
+                {
+                  "type": "postback",
+                  "title": "Ask him about someone",
+                  "payload": "ask_man_about_someone",
+                },
+                {
+                  "type": "postback",
+                  "title": "Ask him to help you",
+                  "payload": "ask_man_help",
+                }
+              
+              ],
+            }]
+          }
+        }
+      }
+  
+      setTimeout(() => {
+          sendMessage(senderId, response);
+      }, 1000);
+
+      
+      }).catch(err => {
+       console.log("DOES NOT GET USER", err);
+    });
+
+
+    
   }
-  sendMessage(senderId, response);
+
+
 
 }
 
@@ -221,3 +354,6 @@ function sendMessage(sender_psid, response) {
     }
   }); 
 }
+
+
+
