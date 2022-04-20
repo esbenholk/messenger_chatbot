@@ -100,7 +100,11 @@ function check_if_player_is_new(event) {
               }
   
 
-            }).catch(err => {});
+            }).catch(err => {
+              console.log("NO CURRENT CHARACTER", err);
+
+
+            });
             
          
           }

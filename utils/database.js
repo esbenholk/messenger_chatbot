@@ -29,7 +29,7 @@ module.exports.dynamicMan = function dynamicMan(manID, message, id) {
 };
 
 module.exports.getCurrentCharacter = function getCurrentCharacter(id) {
-  return database.query( `SELECT currentCharacter FROM britta_game_scores WHERE id =$1`, [id]);
+  return database.query( `SELECT current_character FROM britta_game_scores WHERE id =$1`, [id]);
 };
 
 module.exports.getDynamicMan = function getDynamicMan(manID, id) {
