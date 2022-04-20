@@ -272,38 +272,43 @@ function processPostback(event) {
       }
       console.log("CHECKS OTHER MEN", sortedmen);
 
-      
-      for (let index = 0; index < sortedmen.length; index++) {
-        const man = sortedmen[index];
-
-        databaseActions.getDynamicMan(man, senderId)
-        .then(result => {
-          console.log(`has user met ${man}?`, result.rows[0]);
-          if( result.rows[0] != null){
-            buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
-          }
-
-          if(index >= 2){
-            sendMessageWithCustomButtons()
-          }
-     
-        }).catch(err => { 
-
-          console.log("FAILS AT ASKING ABOUT MEN");
-        });
-        
+      if(sortedmen.length>0){
+        for (let index = 0; index < sortedmen.length; index++) {
+          const man = sortedmen[index];
+  
+          databaseActions.getDynamicMan(man, senderId)
+          .then(result => {
+            console.log(`has user met ${man}?`, result.rows[0]);
+            if( result.rows[0] != null){
+              buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
+            }
+  
+            if(index >= 2){
+              sendMessageWithCustomButtons()
+            }
+       
+          }).catch(err => { 
+  
+            console.log("FAILS AT ASKING ABOUT MEN");
+          });
+          
+        }
+      } else{
+        response = {
+          "text": "Oh you wouldn't know who I was talking about even if I told you. But if you meet someone else you can also ask them about me."
+        }
+        sendMessage(senderId, response);
       }
+
 
       function sendMessageWithCustomButtons(){
         response = {
           "attachment": {
             "type": "template",
             "payload": {
-              "template_type": "generic",
+              "template_type": "buttons",
               "elements": [{
-                "title": "Wanna learn how to play?",
-                "subtitle": "",
-                "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+                "title": "Who do you wanna hear about?",
                 "buttons": buttons
               }]
             }
