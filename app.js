@@ -86,7 +86,7 @@ function check_if_player_is_new(event) {
          console.log("DOES NOT GET USER", err);
       });
 
-    } else if (message.attachments) {
+    } else if (event.message.attachments) {
       let attachment_url = message.attachments[0].payload.url;
 
       sendMessage(senderId, "Sorry, I don't understand that. I am not so good at recognising images yet");
