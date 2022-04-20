@@ -146,7 +146,7 @@ function processPostback(event) {
             "template_type": "generic",
             "elements": [{
               "title": "You play as Britta Spyd",
-              "subtitle": "a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money.",
+              "text": "a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money.",
               "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
               "buttons": [
                 {
