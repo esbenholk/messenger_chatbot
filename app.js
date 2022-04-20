@@ -226,11 +226,11 @@ function processPostback(event) {
         sendMessage(senderId, response);
       }, 1000);
 
-      response = {
+      response2 = {
         "text": "all I can say right now is that us girls must stick together! Can you see the mosaic window? thats my friend Agnes who is making that"
       }
       setTimeout(() => {
-        sendMessage(senderId, response);
+        sendMessage(senderId, response2);
       }, 3000);
     }
     
@@ -241,91 +241,89 @@ function processPostback(event) {
 function processMessage(event) {
   var senderId = event.sender.id;
   var message = event.message;
-  var formattedMessage = message.text.toLowerCase().trim();
+  var formattedMessage = message.text.toLowerCase().trim().toString();
 
-  console.log("RECEIVES MESSAGE", event,formattedMessage);
-
-  // if(formattedMessage.contains("agnes")){
+  if(formattedMessage.contains("agnes")){
     
-  //     console.log("IS ALREADY PLAYER, and sends message", message);
-  //     response = {
-  //       "text": "hej this is agnes"
-  //     }
-  //     sendMessage(senderId, response);
+      console.log("IS ALREADY PLAYER, and sends message", message);
+      response = {
+        "text": "hej this is agnes"
+      }
+      sendMessage(senderId, response);
 
-  // } else if(formattedMessage.contains("reception")){
+  } else if(formattedMessage.contains("reception")){
     
-  //   response = {
-  //     "text": "Welcome to the Public Trustee. As the Danish Government doesn't allow lone women to own any wealth, we offer to help widows like yourself to regain ownership over their belongings. All you have to do is pick up a form and bring it to the Director's office. If you're not ready, you can come back later with more information by simply typing reception. Enjoy your visit!"
-  //   }
-  //   sendMessage(senderId, response);
+    response = {
+      "text": "Welcome to the Public Trustee. As the Danish Government doesn't allow lone women to own any wealth, we offer to help widows like yourself to regain ownership over their belongings. All you have to do is pick up a form and bring it to the Director's office. If you're not ready, you can come back later with more information by simply typing reception. Enjoy your visit!"
+    }
+    sendMessage(senderId, response);
 
-  //   response = {
-  //     "text": "PS.: Please be aware that there might be some inconveniences as we hired an artist to design our window on the main staircase."
-  //   }
-  //   setTimeout(() => {
-  //     sendMessage(senderId, response);
-  //   }, 3000);
+    response = {
+      "text": "PS.: Please be aware that there might be some inconveniences as we hired an artist to design our window on the main staircase."
+    }
+    setTimeout(() => {
+      sendMessage(senderId, response);
+    }, 3000);
 
-  // } else if(formattedMessage.contains("director")){
-  //   response = {
-  //     "text": "you are standing in the Directors office, are you ready to see him?"
-  //   }
-  //   sendMessage(senderId, response);
+  } else if(formattedMessage.contains("director")){
+    response = {
+      "text": "you are standing in the Directors office, are you ready to see him?"
+    }
+    sendMessage(senderId, response);
 
-  // } else if(formattedMessage.contains("atelier")){
-  //   response = {
-  //     "text": "you are standing in the atelier. This is a place to wait and maybe meet a stranger. Oh! look at that: Ole is here. Lets chat with him"
-  //   }
-  //   sendMessage(senderId, response);
+  } else if(formattedMessage.contains("atelier")){
+    response = {
+      "text": "you are standing in the atelier. This is a place to wait and maybe meet a stranger. Oh! look at that: Ole is here. Lets chat with him"
+    }
+    sendMessage(senderId, response);
 
-  //   databaseActions.setCurrentCharacter("Ole", senderId)
-  //   .then(result => {
+    databaseActions.setCurrentCharacter("Ole", senderId)
+    .then(result => {
        
-  //     response = {
-  //       "attachment": {
-  //         "type": "template",
-  //         "payload": {
-  //           "template_type": "generic",
-  //           "elements": [{
-  //             "title": "Lets talk to Ole",
-  //             "subtitle": "",
-  //             "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453963/Britta%20Spyd/IMG_0179_xlxllt.jpg",
-  //             "buttons": [
-  //               {
-  //                 "type": "postback",
-  //                 "title": "Talk",
-  //                 "payload": "talk_to_man",
-  //               },
-  //               {
-  //                 "type": "postback",
-  //                 "title": "Ask him about someone",
-  //                 "payload": "ask_man_about_someone",
-  //               },
-  //               {
-  //                 "type": "postback",
-  //                 "title": "Ask him to help you",
-  //                 "payload": "ask_man_help",
-  //               }
+      response = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "title": "Lets talk to Ole",
+              "subtitle": "",
+              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453963/Britta%20Spyd/IMG_0179_xlxllt.jpg",
+              "buttons": [
+                {
+                  "type": "postback",
+                  "title": "Talk",
+                  "payload": "talk_to_man",
+                },
+                {
+                  "type": "postback",
+                  "title": "Ask him about someone",
+                  "payload": "ask_man_about_someone",
+                },
+                {
+                  "type": "postback",
+                  "title": "Ask him to help you",
+                  "payload": "ask_man_help",
+                }
               
-  //             ],
-  //           }]
-  //         }
-  //       }
-  //     }
+              ],
+            }]
+          }
+        }
+      }
   
-  //     setTimeout(() => {
-  //         sendMessage(senderId, response);
-  //     }, 1000);
+      setTimeout(() => {
+          sendMessage(senderId, response);
+      }, 1000);
 
       
-  //     }).catch(err => {
-  //      console.log("DOES NOT GET USER", err);
-  //   });
+      }).catch(err => {
+       console.log("DOES NOT GET USER", err);
+    });
 
 
     
-  // }
+  }
 
 
 
