@@ -15,7 +15,7 @@ module.exports.getUser= function getUser(id) {
 // /////CREATING USERNAME AND ID
 module.exports.createUser = function createUser(id) {
   return database.query(
-    `INSERT INTO britta_game_scores (id) VALUES ($1, $2) RETURNING *`,
+    `INSERT INTO britta_game_scores (id) VALUES ($1) RETURNING *`,
     [id]
   );
 };
