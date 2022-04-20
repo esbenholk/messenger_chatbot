@@ -14,13 +14,7 @@ app.listen((process.env.PORT || 5000));
 app.use(express.static("./utils"));
 const databaseActions = require("./utils/database");
 
-var ole_id;
-var carl_id;
-var ludwig_id;
-var boerge_id;
-var director_id;
-var agnes_id;
-
+var current_character; 
 // Server index page
 app.get("/", function (req, res) {
   res.send("Deployed!");
@@ -59,9 +53,17 @@ app.post("/webhook", function (req, res) {
 });
 
 
-function check_if_player_is_new(event) {
+// databaseActions.getUser(senderId)
+// .then(result => {
+//   console.log("secccus", err);
 
-  console.log("checks if player is new:  ", event);
+  
+//   }).catch(err => {
+//    console.log("fail", err);
+// });
+
+
+function check_if_player_is_new(event) {
 
   var senderId = event.sender.id;
 
@@ -80,13 +82,22 @@ function check_if_player_is_new(event) {
             });
 
           } else{
-            
-            if (event.postback) {
-              processPostback(event);
-            } else if (event.message) {
-              processMessage(event);
-            }
 
+            databaseActions.getCurrentCharacter(senderId)
+            .then(result => {
+              current_character = result;
+
+              if (event.postback) {
+                processPostback(event);
+              } else if (event.message) {
+                processMessage(event);
+              }
+  
+              console.log("CURRENT CHARACTER", current_character);
+
+            }).catch(err => {});
+            
+         
           }
         }).catch(err => {
          console.log("DOES NOT GET USER", err);
@@ -199,7 +210,7 @@ function processPostback(event) {
             "elements": [{
               "title": "Wanna learn how to play?",
               "subtitle": "",
-              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453963/Britta%20Spyd/Aase_addvdh.jpg",
+              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
               "buttons": [
                 {
                   "type": "postback",
@@ -216,6 +227,8 @@ function processPostback(event) {
     setTimeout(() => {
         sendMessage(senderId, response);
     }, 1000);
+
+
     } else if(payload === "teach_me"){
       response = {
         "text": "your money is being kept by the Public Trustee. You must find the directors office and convince him to hand you your cash, but be careful! Its not easy being a single woman in 1894: you must interact with people, locate rooms and find the right items in order to get the director to give you what is yours"
@@ -229,11 +242,54 @@ function processPostback(event) {
       }, 1000);
 
       response2 = {
-        "text": "all I can say right now is that us girls must stick together! Can you see the mosaic window? thats my friend Agnes who is making that"
+        "text": "all I can say right now is that us girls must stick together! Can you see the mosaic window? thats my friend Agnes who is making . "
       }
       setTimeout(() => {
         sendMessage(senderId, response2);
       }, 3000);
+
+
+    } else if(payload === "ask_man_about_someone"){
+
+      let men = ["carl", "ole", "boerge", "ludwig"];
+      let sortedmen = [];
+      let buttons =  [];
+      if(current_character != null && men.includes(current_character)){
+        sortedmen = arr.filter((value) => value !== current_character)
+      }
+      
+      for (let index = 0; index < men.length; index++) {
+        const man = men[index];
+
+        databaseActions.getDynamicMan(man, senderId)
+        .then(result => {
+          if(result != null){
+            buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
+          }
+        }).catch(err => {});
+        
+      }
+    
+
+      response = {
+        "attachment": {
+          "type": "template",
+          "payload": {
+            "template_type": "generic",
+            "elements": [{
+              "title": "Wanna learn how to play?",
+              "subtitle": "",
+              "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+              "buttons": buttons
+            }]
+          }
+        }
+      }
+      sendMessage(senderId, response);
+
+      
+    
+    
     }
     
 
@@ -244,6 +300,10 @@ function processMessage(event) {
   var senderId = event.sender.id;
   var message = event.message;
   var formattedMessage = message.text.toLowerCase().trim().toString();
+
+  
+
+
 
   if(formattedMessage.includes("agnes")){
     
@@ -273,15 +333,23 @@ function processMessage(event) {
     }
     sendMessage(senderId, response);
 
-  } else if(formattedMessage.includes("atelier")){
+  } else if(formattedMessage.includes("atelier")  || formattedMessage.includes("ole")){
     response = {
-      "text": "you are standing in the atelier. This is a place to wait and maybe meet a stranger. Oh! look at that: Ole is here. Lets chat with him"
+      "text": "You are standing in the atelier. It's always a nice place to meet a stranger. Oh! And look at that: Ole is here!"
     }
     sendMessage(senderId, response);
 
     databaseActions.setCurrentCharacter("Ole", senderId)
     .then(result => {
-       
+
+      databaseActions.dynamicMan("ole", "has met him", senderId)
+        .then(result => {
+          console.log("secccus", err);  
+          }).catch(err => {
+          console.log("fail", err);
+      });
+
+              
       response = {
         "attachment": {
           "type": "template",
@@ -294,19 +362,19 @@ function processMessage(event) {
               "buttons": [
                 {
                   "type": "postback",
-                  "title": "Talk",
-                  "payload": "talk_to_man",
-                },
-                {
-                  "type": "postback",
-                  "title": "Ask him about someone",
+                  "title": "Ask Ole about someone",
                   "payload": "ask_man_about_someone",
                 },
                 {
                   "type": "postback",
-                  "title": "Ask him to help you",
+                  "title": "Ask Ole to help you",
                   "payload": "ask_man_help",
-                }
+                },
+                {
+                  "type": "postback",
+                  "title": "Talk",
+                  "payload": "talk_to_man",
+                },
               
               ],
             }]
@@ -325,7 +393,7 @@ function processMessage(event) {
 
 
     
-  }
+  } 
 
 
 

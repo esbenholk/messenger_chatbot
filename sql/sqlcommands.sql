@@ -12,10 +12,10 @@ CREATE TABLE britta_game_scores(
     form2 VARCHAR,
     form3 VARCHAR,
 
-    man1 VARCHAR,
-    man2 VARCHAR,
-    man3 VARCHAR,
-    man4 VARCHAR,
+    ole VARCHAR,
+    boerge VARCHAR,
+    ludwig VARCHAR,
+    carl VARCHAR,
 
     artist VARCHAR,
     artistquest_result VARCHAR,

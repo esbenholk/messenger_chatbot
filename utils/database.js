@@ -12,9 +12,6 @@ module.exports.getUser= function getUser(id) {
   return database.query(`SELECT * FROM britta_game_scores WHERE id=$1`, [id]);
 };
 
-
-
-
 // /////CREATING USERNAME AND ID
 module.exports.createUser = function createUser(id, username) {
   return database.query(
@@ -24,11 +21,19 @@ module.exports.createUser = function createUser(id, username) {
 };
 
 
-module.exports.dynamicMan = function dynamicTip(manID, message, id) {
+module.exports.dynamicMan = function dynamicMan(manID, message, id) {
   return database.query(
     `UPDATE britta_game_scores SET `+  manID + ` = $1 WHERE id =$2 RETURNING *`,
     [message,id]  
   );
+};
+
+module.exports.getCurrentCharacter = function getCurrentCharacter(id) {
+  return database.query( `SELECT currentCharacter FROM britta_game_scores WHERE id =$1`, [id]);
+};
+
+module.exports.getDynamicMan = function getDynamicMan(manID, id) {
+  return database.query( `SELECT `+  manID + ` FROM britta_game_scores WHERE id =$1`, [id]);
 };
 
 module.exports.setCurrentCharacter = function setCurrentCharacter(character, id) {
