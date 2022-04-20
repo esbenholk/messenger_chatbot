@@ -69,7 +69,7 @@ function processMessage(event) {
          
           console.log("GETS USER", result);
           
-          if(!result){
+          if(result.rowCount === 0){
             databaseActions.createUser(senderId, username)
             .then(result => {
                 console.log("CREATED USER", result);
