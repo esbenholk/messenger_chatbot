@@ -146,8 +146,8 @@ function processPostback(event) {
           "payload": {
             "template_type": "generic",
             "elements": [{
-              "title": "You play as Britta Spyd",
-              "subtitle": "a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money.",
+              "title": "You play as *_Britta Spyd_*",
+              "subtitle": "",
               "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
               "buttons": [
                 {
@@ -175,7 +175,7 @@ function processPostback(event) {
     sendMessage(senderId, response);
   } else if(payload === "lets_do_this"){
     response = {
-      "text": "here is how this will go"
+      "text": "you are a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to _her_ *money*"
     }
     sendMessage(senderId, response);
   }
