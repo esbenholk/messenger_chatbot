@@ -67,6 +67,8 @@ function check_if_player_is_new(event) {
 
   var senderId = event.sender.id;
 
+  console.log("CHECKSSSSS!!!!!", event);
+
   databaseActions.getUser(senderId)
       .then(result => {
          
@@ -89,7 +91,7 @@ function check_if_player_is_new(event) {
 
               if (event.postback) {
                 processPostback(event);
-              } else if (event.message) {
+              } else if (event.message && !event.message.is_echo) {
                 processMessage(event);
               }
   
@@ -108,7 +110,7 @@ function check_if_player_is_new(event) {
 
 function beginOnBoarding(event){
 
-  if (!event.message.is_echo) {
+  if (event.message && !event.message.is_echo) {
     console.log("receives message:  ", event);
     var message = event.message;
     var senderId = event.sender.id;
@@ -302,7 +304,7 @@ function processMessage(event) {
   var formattedMessage = message.text.toLowerCase().trim().toString();
 
   
-  if (!event.message.is_echo) {
+  if (event.message && !event.message.is_echo) {
 
 
   if(formattedMessage.includes("agnes")){
