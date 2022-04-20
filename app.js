@@ -80,7 +80,7 @@ function check_if_player_is_new(event) {
             } else if (event.message) {
               processMessage(event);
             }
-            
+
           }
         }).catch(err => {
          console.log("DOES NOT GET USER", err);
@@ -105,24 +105,25 @@ function beginOnBoarding(event){
     if (message.text) {
 
       response = {
+        "text": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. You will play as Britta Spyd, a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money.",
         "attachment": {
           "type": "template",
           "payload": {
             "template_type": "generic",
             "elements": [{
               "title": "Welcome to the Britta Spyd Experience!",
-              "subtitle": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. You will play as Britta Spyd, a young woman recently widowed who has just appeared on the buildings doorstep in the hopes that she can get access to her money. Do you wanna play?",
+              "subtitle": "Do you wanna play?",
               "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453963/Britta%20Spyd/Aase_addvdh.jpg",
               "buttons": [
                 {
                   "type": "postback",
                   "title": "Yes!",
-                  "payload": "yes",
+                  "payload": "yes_i_wanna_play",
                 },
                 {
                   "type": "postback",
                   "title": "No!",
-                  "payload": "no",
+                  "payload": "no_i_dont_want_to_play",
                 }
               ],
             }]
@@ -140,7 +141,40 @@ function beginOnBoarding(event){
 function processPostback(event) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
-  console.log("IS ALREADY PLAYER, and sends payload", payload);
+  if(payload === "yes_i_wanna_play"){
+    response = {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            "title": "You play as Britta Spyd",
+            "subtitle": "a recently widowed woman in Copenhagen 1894",
+            "image_url": "https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png",
+            "buttons": [
+              {
+                "type": "postback",
+                "title": "Yes!",
+                "payload": "yes_i_wanna_play",
+              },
+              {
+                "type": "postback",
+                "title": "No!",
+                "payload": "no_i_dont_want_to_play",
+              }
+            ],
+          }]
+        }
+      }
+    }
+    sendMessage(senderId, response);
+
+  } else if(payload === "no_i_dont_want_to_play"){
+    response = {
+      "text": "boo u r"
+    }
+    sendMessage(senderId, response);
+  }
 
 
 }
