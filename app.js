@@ -3,12 +3,16 @@ var express = require("express");
 var request = require("request");
 require('dotenv').config();
 
+app.use(express.static("./utils"));
+
 var bodyParser = require("body-parser");
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
+
+const databaseActions = require("./utils/database");
 
 // Server index page
 app.get("/", function (req, res) {
@@ -51,6 +55,15 @@ app.post("/webhook", function (req, res) {
 
 
 function processMessage(event) {
+    var isUser;
+    databaseActions.createUser("briteny")
+      .then(result => {
+          console.log(result);
+        }).catch(err => {
+         console.log(err);
+      });
+
+
   if (!event.message.is_echo) {
     var message = event.message;
     var senderId = event.sender.id;
