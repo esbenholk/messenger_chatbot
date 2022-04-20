@@ -138,6 +138,7 @@ function processPostback(event) {
       "text": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. "
     }
     sendMessage(senderId, response).then(result=>{
+     
       response = {
         "attachment": {
           "type": "template",
@@ -159,7 +160,10 @@ function processPostback(event) {
           }
         }
       }
-      sendMessage(senderId, response);
+      setTimeout(() => {
+        sendMessage(senderId, response);
+
+      }, 1000);
 
     });
 
