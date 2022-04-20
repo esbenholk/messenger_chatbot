@@ -52,12 +52,10 @@ app.post("/webhook", function (req, res) {
 
 function check_if_player_is_new(event) {
 
+  console.log("checks if player is new:  ", event);
+
   if (!event.message.is_echo) {
-    console.log("receives message:  ", event.message);
-    var message = event.message;
     var senderId = event.sender.id;
-    var username = event.sender.username;
-    var isAlreadyUser = false;
 
     databaseActions.getUser(senderId)
       .then(result => {
