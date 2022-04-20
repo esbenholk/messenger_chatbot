@@ -91,7 +91,7 @@ function check_if_player_is_new(event) {
 
               console.log("CURRENT CHARACTER", result);
 
-              //current_character = result;
+              current_character = result.rows[0].current_character;
 
               if (event.postback) {
                 processPostback(event);
@@ -272,13 +272,13 @@ function processPostback(event) {
       console.log("CHECKS OTHER MEN", sortedmen);
 
       
-      for (let index = 0; index < men.length; index++) {
-        const man = men[index];
+      for (let index = 0; index < sortedmen.length; index++) {
+        const man = sortedmen[index];
 
         databaseActions.getDynamicMan(man, senderId)
         .then(result => {
-          console.log(`has user met ${man}?`, result);
-          if(result != null){
+          console.log(`has user met ${man}?`, result.rows[0]);
+          if( result.rows[0] != null){
             buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
           }
         }).catch(err => { 
