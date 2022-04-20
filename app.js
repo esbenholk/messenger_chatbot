@@ -87,7 +87,11 @@ function check_if_player_is_new(event) {
 
             databaseActions.getCurrentCharacter(senderId)
             .then(result => {
-              current_character = result;
+
+
+              console.log("CURRENT CHARACTER", result);
+
+              //current_character = result;
 
               if (event.postback) {
                 processPostback(event);
@@ -95,7 +99,6 @@ function check_if_player_is_new(event) {
                 processMessage(event);
               }
   
-              console.log("CURRENT CHARACTER", current_character);
 
             }).catch(err => {});
             
