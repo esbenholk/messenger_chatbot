@@ -67,14 +67,14 @@ function check_if_player_is_new(event) {
 
   var senderId = event.sender.id;
 
-  console.log("CHECKSSSSS!!!!!", event);
+  console.log("CHECKSSSSS EVENT!!!!!", senderId);
 
   databaseActions.getUser(senderId)
       .then(result => {
          
-          console.log("GETS USER", result);
+          console.log("CHECK FOR USER", result);
           if(result.rowCount === 0){
-
+            console.log("CREATES USER", senderId);
             databaseActions.createUser(senderId)
             .then(result => {
               console.log("CREATED USER", result);
@@ -250,7 +250,7 @@ function processPostback(event) {
       }, 1000);
 
       response2 = {
-        "text": "all I can say right now is that us girls must stick together! Can you see the mosaic window? thats my friend Agnes who is making . "
+        "text": "all I can say right now is that us girls must stick together! Can you see the mosaic window? thats my friend Agnes who is making it."
       }
       setTimeout(() => {
         sendMessage(senderId, response2);
@@ -259,22 +259,32 @@ function processPostback(event) {
 
     } else if(payload === "ask_man_about_someone"){
 
+
+      console.log("ASKS ABOUT MEN", current_character);
+
       let men = ["carl", "ole", "boerge", "ludwig"];
       let sortedmen = [];
       let buttons =  [];
       if(current_character != null && men.includes(current_character)){
         sortedmen = arr.filter((value) => value !== current_character)
       }
+
+      console.log("CHECKS OTHER MEN", sortedmen);
+
       
       for (let index = 0; index < men.length; index++) {
         const man = men[index];
 
         databaseActions.getDynamicMan(man, senderId)
         .then(result => {
+          console.log(`has user met ${man}?`, result);
           if(result != null){
             buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
           }
-        }).catch(err => {});
+        }).catch(err => { 
+
+          console.log("FAILS AT ASKING ABOUT MEN");
+        });
         
       }
     

@@ -13,9 +13,9 @@ module.exports.getUser= function getUser(id) {
 };
 
 // /////CREATING USERNAME AND ID
-module.exports.createUser = function createUser(id, username) {
+module.exports.createUser = function createUser(id) {
   return database.query(
-    `INSERT INTO britta_game_scores (id, username) VALUES ($1, $2) RETURNING *`,
+    `INSERT INTO britta_game_scores (id) VALUES ($1, $2) RETURNING *`,
     [id, username]
   );
 };
@@ -38,7 +38,7 @@ module.exports.getDynamicMan = function getDynamicMan(manID, id) {
 
 module.exports.setCurrentCharacter = function setCurrentCharacter(character, id) {
   return database.query(
-    `UPDATE britta_game_scores SET current_character = $1 WHERE id =$2 RETURNING *`,
+    `UPDATE britta_game_scores SET current_character = $1 WHERE id =$2`,
     [character,id]  
   );
 };
