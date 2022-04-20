@@ -65,10 +65,11 @@ function processMessage(event) {
 
     databaseActions.getUser(senderId)
       .then(result => {
+          console.log("CHECK FOR USER", result);
           if(!result){
             databaseActions.createUser(senderId, username)
             .then(result => {
-                console.log(result);
+                console.log("CREATED USER", result);
               }).catch(err => {
                console.log(err);
             });
