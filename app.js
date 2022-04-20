@@ -137,9 +137,10 @@ function processPostback(event) {
     response = {
       "text": "My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. "
     }
-    sendMessage(senderId, response).then(result=>{
-     
-      response = {
+    sendMessage(senderId, response);
+    
+    
+    response = {
         "attachment": {
           "type": "template",
           "payload": {
@@ -160,12 +161,10 @@ function processPostback(event) {
           }
         }
       }
-      setTimeout(() => {
+
+    setTimeout(() => {
         sendMessage(senderId, response);
-
-      }, 1000);
-
-    });
+    }, 1000);
 
     
 
@@ -198,7 +197,7 @@ function processMessage(event) {
 
 
 
-async function sendMessage(sender_psid, response) {
+function sendMessage(sender_psid, response) {
   
   // Construct the message body
   let request_body = {
