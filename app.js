@@ -279,10 +279,11 @@ function processPostback(event) {
           .then(result => {
 
             let resultObj =  result.rows[0];
-            console.log(`has user met ${man}?`,resultObj[Object.keys(resultObj)[0]]);
+            console.log(`has user met ${man}?`, resultObj[Object.keys(resultObj)[0]]);
            
-            if( result.rows[0] != null){
+            if( resultObj[Object.keys(resultObj)[0]] != null){
               buttons.push({ "type": "postback", "title": `tell me about ${man}`, "payload":  `tell_me_about_${man}`});
+              console.log("pushes button into array,", man);
             }
   
             if(index >= 2){
@@ -314,7 +315,10 @@ function processPostback(event) {
               }
             }
           }
-          sendMessage(senderId, response);
+          setTimeout(() => {
+            sendMessage(senderId, response2);
+          }, 3000);
+
 
         } else{
           console.log("sends error notice instead: meet more men");
