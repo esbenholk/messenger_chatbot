@@ -366,7 +366,7 @@ function processPostback (event) {
   }
 }
 
-function processMessage (event) {
+async function processMessage (event) {
   const senderId = event.sender.id
   const message = event.message
   const formattedMessage = message.text.toLowerCase().trim().toString()
