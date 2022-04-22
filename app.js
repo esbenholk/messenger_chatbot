@@ -100,10 +100,19 @@ async function have_you_interacted_before(interaction, id){
   .then(result => {
     const resultObj = result.rows[0]
 
+    console.log("HAVE THEY INTERACTED BEFORE????", resultObj, resultObj[Object.keys(resultObj)[0]]);
+
     if (resultObj[Object.keys(resultObj)[0]] != null) {
+
+        console.log("yes???", resultObj[Object.keys(resultObj)[0]]);
+
         return true;
     } else{
+
+      console.log("NO????", resultObj[Object.keys(resultObj)[0]]);
+
       return false;
+
     }
 
 }).catch(()=>{})
@@ -445,6 +454,18 @@ function processMessage (event) {
 
       set_current_space('reception', senderId);
 
+      response = {
+        attachment: {
+          type: 'image',
+          payload: {
+            url:"https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650614360/Britta%20Spyd/BG_xyzx6v.png", 
+            is_reusable:true
+          }
+        }
+      }
+      sendMessage(senderId, response).then(res=>{
+
+        
       if(have_you_interacted_before('reception', senderId)){
 
         response = {
@@ -515,6 +536,13 @@ function processMessage (event) {
 
 
       }
+
+
+
+
+      });
+
+
 
 
 
