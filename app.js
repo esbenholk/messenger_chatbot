@@ -389,8 +389,10 @@ function processMessage (event) {
 
       sendMessage(senderId, response).then(res=>{
 
-        if(have_you_interacted_before('agnes', senderId)){
-
+        
+      const have_they_interacted = await have_you_interacted_before('agnes', senderId);
+        
+      if(have_they_interacted){
  
           response = {
             text: "Oh Britta! How is it going? I wanted to share you a secret actually: I am pregnant - Maybe you can help me. "
@@ -465,8 +467,9 @@ function processMessage (event) {
       }
       sendMessage(senderId, response).then(res=>{
 
+      const have_they_interacted = await have_you_interacted_before('reception', senderId);
         
-      if(have_you_interacted_before('reception', senderId)){
+      if(have_they_interacted){
 
         response = {
           text: "Welcome back Britta, are you ready to pick a form to bring with you to the Directors office?"
@@ -479,9 +482,9 @@ function processMessage (event) {
               payload: {
                 template_type: 'generic',
                 elements: [{
-                  title: 'Lets talk to Ole',
+                  title: 'Are you ready to submit a form?',
                   subtitle: '',
-                  image_url: 'https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453963/Britta%20Spyd/IMG_0179_xlxllt.jpg',
+                  image_url: 'https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650614360/Britta%20Spyd/BG_xyzx6v.png',
                   buttons: [
                     {
                       type: 'postback',
