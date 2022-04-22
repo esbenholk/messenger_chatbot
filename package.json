@@ -16,5 +16,13 @@
     "mongoose": "^6.2.10",
     "request": "^2.75.0",
     "spiced-pg": "^1.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^8.13.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.1.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-react": "^7.29.4"
   }
 }

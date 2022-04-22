@@ -28,12 +28,13 @@ module.exports.dynamicMan = function dynamicMan(manID, message, id) {
   );
 };
 
-module.exports.getCurrentCharacter = function getCurrentCharacter(id) {
-  return database.query( `SELECT current_character FROM britta_game_scores WHERE id =$1`, [id]);
-};
-
 module.exports.getDynamicMan = function getDynamicMan(manID, id) {
   return database.query( `SELECT `+  manID + ` FROM britta_game_scores WHERE id =$1`, [id]);
+};
+
+
+module.exports.getCurrentCharacter = function getCurrentCharacter(id) {
+  return database.query( `SELECT current_character FROM britta_game_scores WHERE id =$1`, [id]);
 };
 
 module.exports.setCurrentCharacter = function setCurrentCharacter(character, id) {
@@ -42,6 +43,34 @@ module.exports.setCurrentCharacter = function setCurrentCharacter(character, id)
     [character,id]  
   );
 };
+
+module.exports.setCurrentSpace = function setCurrentSpace(space, id) {
+  return database.query(
+    `UPDATE britta_game_scores SET current_space = $1 WHERE id =$2`,
+    [space,id]  
+  );
+};
+
+module.exports.getCurrentSpace = function getCurrentSpace(id) {
+  return database.query( `SELECT current_space FROM britta_game_scores WHERE id =$1`, [id]);
+};
+
+
+module.exports.dynamicSpace = function dynamicSpace(space, message, id) {
+  return database.query(
+    `UPDATE britta_game_scores SET `+  space + ` = $1 WHERE id =$2 RETURNING *`,
+    [message,id]  
+  );
+};
+
+module.exports.getDynamicSpace = function getDynamicSpace(space, id) {
+  return database.query( `SELECT `+  space + ` FROM britta_game_scores WHERE id =$1`, [id]);
+};
+
+module.exports.getInteraction = function getInteraction(interaction, id) {
+  return database.query( `SELECT `+  interaction + ` FROM britta_game_scores WHERE id =$1`, [id]);
+};
+
 
 
 // ////recaptcha query 

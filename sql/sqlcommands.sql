@@ -32,6 +32,11 @@ CREATE TABLE britta_game_scores(
     chosen_man VARCHAR,
     has_succesfully_convinced_man VARCHAR,
 
+    reception VARCHAR,
+    atelier VARCHAR, 
+    lounge VARCHAR,
+    directors_office VARCHAR,
+
     additional1 VARCHAR, 
     additional2 VARCHAR, 
     additional3 VARCHAR, 
