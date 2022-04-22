@@ -59,7 +59,7 @@ app.post('/webhook', function (req, res) {
 // });
 
 
-function set_current_space(space, id){
+async function set_current_space(space, id){
 
   databaseActions.setCurrentSpace(space, id)
   .then(result => {
@@ -68,35 +68,42 @@ function set_current_space(space, id){
 
     if (resultObj[Object.keys(resultObj)[0]] != null) {
         current_space = resultObj[Object.keys(resultObj)[0]];
+        return current_space;
     }
 
-  }).catch(()=>{})
+  }).catch(()=>{
+    return false;
+  })
 }
 
 
-function get_current_space(id){
+async function get_current_space(id){
 
-    databaseActions.getCurrentSpace(id)
+    await databaseActions.getCurrentSpace(id)
     .then(result => {
       const resultObj = result.rows[0]
 
       if (resultObj[Object.keys(resultObj)[0]] != null) {
           current_space = resultObj[Object.keys(resultObj)[0]];
           return current_space;
+      } else{
+        return null;
       }
      
   
   }).catch(()=>{})
 }
 
-function have_you_interacted_before(interaction, id){
+async function have_you_interacted_before(interaction, id){
 
-  databaseActions.getInteraction(interaction, id)
+  await databaseActions.getInteraction(interaction, id)
   .then(result => {
     const resultObj = result.rows[0]
 
     if (resultObj[Object.keys(resultObj)[0]] != null) {
         return true;
+    } else{
+      return false;
     }
 
 }).catch(()=>{})
@@ -179,93 +186,108 @@ function processPostback (event) {
   const senderId = event.sender.id
   const payload = event.postback.payload
 
+
+  /////////consent to play
   if (payload === 'yes_i_wanna_play') {
-    response = {
+    let response = {
       text: 'My name is Aase and I will be your guide through this site specific puzzle game, where you have to discover the building we are in and the items that are left here. Did you know that this building was built in 1894 to house the Public Trustee, a national institution that governed the estate of people deemed unable to govern themselves. Back then that mostly meant orphans and children. '
     }
-    sendMessage(senderId, response)
-
-    let response = {
-      attachment: {
-              type: 'template',
-              payload: {
-              template_type: 'generic',
-              elements: [{
-              title: 'You play as Britta Spyd',
-              subtitle: '',
-              image_url: 'https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png',
-              buttons: [
-                {
-                  type: 'postback',
-                  title: 'Lets do this',
-                  payload: 'lets_do_this'
-              }
-            ]
-          }]
+    sendMessage(senderId, response).then(res=>{
+      response = {
+        attachment: {
+                type: 'template',
+                payload: {
+                template_type: 'generic',
+                elements: [{
+                title: 'You play as Britta Spyd',
+                subtitle: '',
+                image_url: 'https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png',
+                buttons: [
+                  {
+                    type: 'postback',
+                    title: 'Lets do this',
+                    payload: 'lets_do_this'
+                }
+              ]
+            }]
+          }
         }
       }
-    }
+      setTimeout(() => {
+        sendMessage(senderId, response)
+      }, 1000);
 
-    setTimeout(() => {
-      sendMessage(senderId, response)
-    }, 1000)
+    });
+
+  /////////dont wanna play
   } else if (payload === 'no_i_dont_want_to_play') {
     response = {
       text: 'boo u r boring'
     }
     sendMessage(senderId, response)
+
+  //////consent to play as BRITTA
   } else if (payload === 'lets_do_this') {
     response = {
       text: "you are a recently widowed young woman who has just appeared on the building's doorstep in the hopes that you can get access to your money."
     }
 
-    sendMessage(senderId, response)
+    sendMessage(senderId, response).then(res=>{
 
-    response = {
-      attachment: {
-        type: 'template',
-        payload: {
-          template_type: 'generic',
-          elements: [{
-            title: 'Wanna learn how to play?',
-            subtitle: '',
-            image_url: 'https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png',
-            buttons: [
-              {
-                type: 'postback',
-                title: 'teach me',
-                payload: 'teach_me'
-              }
-
-            ]
-          }]
+      response = {
+        attachment: {
+          type: 'template',
+          payload: {
+            template_type: 'generic',
+            elements: [{
+              title: 'Wanna learn how to play?',
+              subtitle: '',
+              image_url: 'https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650453964/Britta%20Spyd/IMG_0679_qsa9vr.png',
+              buttons: [
+                {
+                  type: 'postback',
+                  title: 'teach me',
+                  payload: 'teach_me'
+                }
+  
+              ]
+            }]
+          }
         }
       }
-    }
+  
+      setTimeout(() => {
+        sendMessage(senderId, response)
+      }, 1000)
 
-    setTimeout(() => {
-      sendMessage(senderId, response)
-    }, 1000)
+    })
+
+
   } else if (payload === 'teach_me') {
     response = {
       text: 'your money is being kept by the Public Trustee. You must find the directors office and convince him to hand you your cash, but be careful! Its not easy being a single woman in 1894: you must interact with people, locate rooms and find the right items in order to get the director to give you what is yours'
     }
-    sendMessage(senderId, response)
-    response = {
-      text: 'Each room has a code that you can text me, and then I will tell who or what is happening in there and what you might be able to do!'
-    }
-    setTimeout(() => {
-      sendMessage(senderId, response)
-    }, 1000)
-
-    response2 = {
-      text: 'lets try it out! try finding the reception and typing in the room code "reception"'
-    }
-    setTimeout(() => {
-      sendMessage(senderId, response2)
-    }, 3000)
 
 
+    sendMessage(senderId, response).then(res=>{
+      response = {
+        text: 'Each room has a code that you can text me, and then I will tell who or what is happening in there and what you might be able to do!'
+      }
+
+      setTimeout(() => {
+
+        sendMessage(senderId, response).then(res=>{
+
+          response2 = {
+            text: 'lets try it out! try finding the reception and typing in the room code "reception"'
+          }
+          setTimeout(() => {
+            sendMessage(senderId, response2)
+          }, 3000)
+
+        })
+      }, 1000)
+    })
 
 
 
@@ -320,11 +342,15 @@ function processPostback (event) {
         setTimeout(() => {
           sendMessage(senderId, response2)
         }, 3000)
+
+
       } else {
+
         console.log('sends error notice instead: meet more men')
         response = {
           text: "Oh you wouldn't know who I was talking about even if I told you. You have to meet a person before you can hear gossip about them, but hej: now you've met me!!!"
         }
+
         sendMessage(senderId, response)
       }
     }
@@ -352,79 +378,79 @@ function processMessage (event) {
         }
       }
 
-      sendMessage(senderId, response);
+      sendMessage(senderId, response).then(res=>{
 
-      if(have_you_interacted_before('agnes', senderId)){
+        if(have_you_interacted_before('agnes', senderId)){
 
  
-        response = {
-          text: "Oh Britta! How is it going? I wanted to share you a secret actually: I am pregnant - Maybe you can help me. "
-        }
-        sendMessage(senderId, response);
-
-        response = {
-          attachment: {
-            type: 'template',
-            payload: {
-              template_type: 'generic',
-              elements: [{
-                title: 'What should I call my daughter?',
-                subtitle: '',
-                image_url: 'https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650617513/Britta%20Spyd/Agnes_tcvwes.png',
-                buttons: [
-                  {
-                    type: 'postback',
-                    title: 'Benedetta',
-                    payload: 'baby_name_benedetta'
-                  },
-                  {
-                    type: 'postback',
-                    title: 'Stine',
-                    payload: 'baby_name_stine'
-                  },
-                  {
-                    type: 'postback',
-                    title: 'Victoria',
-                    payload: 'baby_name_victoria'
-                  },
-    
-                ]
-              }]
+          response = {
+            text: "Oh Britta! How is it going? I wanted to share you a secret actually: I am pregnant - Maybe you can help me. "
+          }
+          sendMessage(senderId, response);
+  
+          response = {
+            attachment: {
+              type: 'template',
+              payload: {
+                template_type: 'generic',
+                elements: [{
+                  title: 'What should I call my daughter?',
+                  subtitle: '',
+                  image_url: 'https://res.cloudinary.com/www-houseofkilling-com/image/upload/v1650617513/Britta%20Spyd/Agnes_tcvwes.png',
+                  buttons: [
+                    {
+                      type: 'postback',
+                      title: 'Benedetta',
+                      payload: 'baby_name_benedetta'
+                    },
+                    {
+                      type: 'postback',
+                      title: 'Stine',
+                      payload: 'baby_name_stine'
+                    },
+                    {
+                      type: 'postback',
+                      title: 'Victoria',
+                      payload: 'baby_name_victoria'
+                    },
+      
+                  ]
+                }]
+              }
             }
           }
+  
+          setTimeout(() => {
+            sendMessage(senderId, response2)
+          }, 3000)
+  
+  
+        } else{
+  
+          response = {
+            text: "Hello Britta! I'm a big fan of yours! You're an amazing performer! I'm so sorry for the loss of your husband, and now you can't even handle your own money. They will help you here, but watch out: as bad as it can sound, the form is not the only thing you'll need. You have to find a man who is willing to be your companion in the process, or your application will be rejected and you won't get any of your money! I know, it sucks, but maybe you will find someone here. Look around for hints!"
+          }
+          sendMessage(senderId, response);
+          
         }
 
-        setTimeout(() => {
-          sendMessage(senderId, response2)
-        }, 3000)
+      });
 
-
-      } else{
-
-        response = {
-          text: "Hello Britta! I'm a big fan of yours! You're an amazing performer! I'm so sorry for the loss of your husband, and now you can't even handle your own money. They will help you here, but watch out: as bad as it can sound, the form is not the only thing you'll need. You have to find a man who is willing to be your companion in the process, or your application will be rejected and you won't get any of your money! I know, it sucks, but maybe you will find someone here. Look around for hints!"
-        }
-        sendMessage(senderId, response);
-        
-      }
+ 
 
 
 
     //////RECEPTION
     } else if (formattedMessage.includes('reception')) {
 
-      databaseActions.getDynamicSpace('reception', senderId)
-      .then(result => {
-        const resultObj = result.rows[0];
+      set_current_space('reception', senderId);
 
+      if(have_you_interacted_before('reception', senderId)){
 
-
-        /////IF ITS NOT THE FIRST TIME THERE
-        if (resultObj[Object.keys(resultObj)[0]] != null) {
-          response = {
-            text: "Welcome back Britta, are you ready to pick a form to bring with you to the Directors office?"
-          }
-          sendMessage(senderId, response)
+        response = {
+          text: "Welcome back Britta, are you ready to pick a form to bring with you to the Directors office?"
+        }
+        sendMessage(senderId, response).then(res=>{
 
           response = {
             attachment: {
@@ -451,51 +477,45 @@ function processMessage (event) {
                       title: 'I will go investigate some more',
                       payload: 'continue_investigation'
                     }
-
+  
                   ]
                 }]
               }
             }
           }
-
+  
           setTimeout(() => {
             sendMessage(senderId, response)
           }, 2000)
 
+        })
 
-        //////IF IT IS THE FORST TIME THERE
-        }  else{
+      
+      } else{
 
-          databaseActions.dynamicSpace('reception', 'has been there', senderId)
-          .then(result => {
+        databaseActions.dynamicSpace('reception', 'has been there', senderId)
+        .then(result => {
 
-            response = {
-              text: "Welcome to the Public Trustee. As the Danish Government doesn't allow lone women to own any wealth, we offer to help widows like yourself to regain ownership over their belongings. All you have to do is pick up a form and bring it to the Director's office. If you're not ready, you can come back later with more information by simply typing reception. Enjoy your visit!"
-            }
-            sendMessage(senderId, response)
-
-
+          response = {
+            text: "Welcome to the Public Trustee. As the Danish Government doesn't allow lone women to own any wealth, we offer to help widows like yourself to regain ownership over their belongings. All you have to do is pick up a form and bring it to the Director's office. If you're not ready, you can come back later with more information by simply typing reception. Enjoy your visit!"
+          }
+          sendMessage(senderId, response).then(res=>{
             response = {
               text: 'PS.: Please be aware that there might be some inconveniences as we hired an artist to design our window on the main staircase.'
             }
             setTimeout(() => {
               sendMessage(senderId, response)
             }, 3000);
-
-
-          }).catch(err => {
-            console.log('fail', err)
+  
           })
 
-        }    
-
         }).catch(err => {
+          console.log('fail', err)
+        })
 
-        console.log('fail', err);
 
-      })
+      }
 
-      set_current_space('reception', senderId);
 
 
     //////DIRECTORS OFFICE
@@ -512,9 +532,9 @@ function processMessage (event) {
       response = {
         text: "You are standing in the atelier. It's always a nice place to meet a stranger. Oh! And look at that: Ole is here!"
       }
-      sendMessage(senderId, response)
+      sendMessage(senderId, response).then(res=>{
 
-      databaseActions.setCurrentCharacter('Ole', senderId)
+        databaseActions.setCurrentCharacter('Ole', senderId)
         .then(result => {
           databaseActions.dynamicMan('ole', 'has met him', senderId)
             .then(result => {
@@ -561,13 +581,17 @@ function processMessage (event) {
         }).catch(err => {
           console.log('DOES NOT GET USER', err)
         })
+
+      })
+
+   
     }
 
 
   }
 }
 
-function sendMessage (sender_psid, response) {
+async function sendMessage (sender_psid, response) {
   // Construct the message body
   const request_body = {
     recipient: {
@@ -584,9 +608,9 @@ function sendMessage (sender_psid, response) {
     json: request_body
   }, (err, res, body) => {
     if (!err) {
-      console.log('message sent!')
+      return res;
     } else {
-      console.error('Unable to send message:' + err)
+      return err;
     }
   })
 }
